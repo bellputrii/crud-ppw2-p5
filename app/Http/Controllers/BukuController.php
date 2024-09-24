@@ -19,13 +19,12 @@ class BukuController extends Controller
         return view('index', compact('data_buku', 'total_buku', 'total_harga'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -33,38 +32,36 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        Buku::create($request->only(['judul', 'penulis', 'harga', 'tgl_terbit']));
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('buku.index')->with('success', 'Buku berhasil ditambahkan');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        return view('edit', ['buku' => Buku::find($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        Buku::find($id)->update($request->only(['judul', 'penulis', 'harga', 'tgl_terbit']));
+
+        return redirect()->route('buku.index')->with('success', 'Buku berhasil diperbarui');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        Buku::find($id)->delete();
+
+        return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus');
     }
 }
